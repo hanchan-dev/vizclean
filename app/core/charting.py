@@ -1,7 +1,10 @@
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import legend
+
 
 def apply_limit(data, limit):
-    """Potong data jika limit diberikan dan valid."""
+
+    # limit data
     if limit is None:
         return data
 
@@ -69,9 +72,9 @@ def pie(ax, df, title, col, limit=None):
 def histogram(ax, df, title, col, x_label, y_label,
               bins=10, color1="blue", grid=False, limit=None):
 
-    # histogram tidak pakai value_counts()
-    # limit tidak relevan untuk histogram
+
     values = df[col].dropna()
+    values = apply_limit(values, limit)
 
     ax.hist(values, bins=bins, color=color1, edgecolor="black")
 
@@ -85,32 +88,15 @@ def histogram(ax, df, title, col, x_label, y_label,
         ax.grid(axis="y", color="lightgray", linestyle="--", alpha=0.7)
 
 
-# def scatter(ax, df, title, col_x, col_y,
-#             label_x, label_y,
-#             color="red", marker="o", size=50, grid=False, limit=None):
-#
-#     # Scatter tidak memakai value_counts
-#     # Limit tidak relevan
-#     ax.scatter(df[col_x], df[col_y],
-#                color=color, marker=marker, s=size, alpha=0.8)
-#
-#     ax.set_title(title, fontsize=18, fontweight="bold")
-#     ax.set_xlabel(label_x, fontsize=12)
-#     ax.set_ylabel(label_y, fontsize=12)
-#
-#     if grid:
-#         ax.grid(axis="both", color="lightgray", linestyle="--", alpha=0.7)
-
 def scatter(ax, df, title, col_x, col_y,
             label_x, label_y,
             color1="red", marker="o", size=10,
             color2="blue", marker2="x", legend1=None, legend2=None,
             grid=False, limit=None):
 
-    # =================================================================
+
     #   COL X = value_counts → jadi (index, value)
     #   COL Y = value_counts → jadi (index, value)
-    # =================================================================
 
     data_x = df[col_x].value_counts()
     data_y = df[col_y].value_counts()
@@ -159,9 +145,9 @@ def scatter(ax, df, title, col_x, col_y,
 
 
 
-# ================================================================
+
 #   WRAPPER UTAMA
-# ================================================================
+
 
 def create_chart(chart_type, df, fig=None, *,
                  title="", col=None,
@@ -173,6 +159,8 @@ def create_chart(chart_type, df, fig=None, *,
                  bins=10, grid=False,
                  color2="red",
                  marker2="o",
+                 legend1="",
+                 legend2="",
                  limit=None):
 
     if fig is None:
@@ -201,18 +189,20 @@ def create_chart(chart_type, df, fig=None, *,
     elif chart_type == "histogram":
         histogram(ax, df, title, col,
                   x_label, y_label,
-                  bins=bins, color1=color1, grid=grid)
+                  bins=bins, color1=color1, grid=grid, limit=limit)
 
     elif chart_type == "scatter":
         scatter(
             ax, df, title,
-            col_1, col_2,  # kolom scatter x & y
+            col_1, col_2,
             x_label, y_label,
-            color1=color1,  # warna set 1
-            marker=marker,  # marker set 1
+            color1=color1,
+            marker=marker,
             size=markersize,
-            color2=color2,  # warna set 2
-            marker2=marker2,  # marker set 2
+            color2=color2,
+            marker2=marker2,
+            legend1=legend1,
+            legend2=legend2,
             grid=grid,
             limit=limit
         )

@@ -1,4 +1,3 @@
-# from gui.app_window import AppWindow
 from app.core import charting as ct, data_loader as dl, data_cleaner as dc
 
 
@@ -62,6 +61,8 @@ CHART_FIELDS = {
         ("Color 2", "color2"),
         ("Marker 1", "marker"),
         ("Marker 2", "marker2"),
+        ("Legend 1", "legend1"),
+        ("Legend 2", "legend2"),
         ("Size", "markersize"),
         ("Grid (yes/no)", "grid"),
         ("Max Items (optional)", "limit")
@@ -121,9 +122,8 @@ def main():
         menu()
         choice = input("Choose an option: ")
 
-        # ------------------------------------------------------------
         # 1. LOAD DATASET
-        # ------------------------------------------------------------
+
         if choice == "1":
             path = input("Enter file path: ")
             df_raw = dl.load_file(path)
@@ -136,9 +136,10 @@ def main():
 
             input("Press Enter to continue...")
 
-        # ------------------------------------------------------------
+
+
         # 2. CLEAN DATASET
-        # ------------------------------------------------------------
+
         elif choice == "2":
             if df_raw is None:
                 print("You must load a dataset first!")
@@ -150,9 +151,10 @@ def main():
 
             input("Press Enter to continue...")
 
-        # ------------------------------------------------------------
+
+
         # 3. CLEANING LOG
-        # ------------------------------------------------------------
+
         elif choice == "3":
             if log_clean is None:
                 print("Clean the dataset first!")
@@ -163,9 +165,10 @@ def main():
 
             input("Press Enter to continue...")
 
-        # ------------------------------------------------------------
+
+
         # 4. SAVE CLEANED
-        # ------------------------------------------------------------
+
         elif choice == "4":
             if df_clean is None:
                 print("Clean the data first!")
@@ -189,9 +192,10 @@ def main():
 
             input("Press Enter to continue...")
 
-        # ------------------------------------------------------------
+
+
         # 5. GENERATE CHART (HANYA SETELAH CLEAN)
-        # ------------------------------------------------------------
+
         elif choice == "5":
             if df_clean is None:
                 print("Clean the data first, you impatient rascal.")
@@ -222,45 +226,9 @@ def main():
 
             input("Press Enter to continue...")
 
-            # plt.show()
 
-            # # LINE
-            # if ch == "1":
-            #     col = input("Column for line chart: ")
-            #     fig = ct.create_chart("line", df_clean, col=col)
-            #     plt.show()
-            #
-            # # BAR
-            # elif ch == "2":
-            #     col = input("Column for bar chart: ")
-            #     fig = ct.create_chart("bar", df_clean, col=col)
-            #     plt.show()
-            #
-            # # PIE
-            # elif ch == "3":
-            #     col = input("Column for pie chart: ")
-            #     fig = ct.create_chart("pie", df_clean, col=col)
-            #     plt.show()
-            #
-            # # HISTOGRAM
-            # elif ch == "4":
-            #     col = input("Numeric column: ")
-            #     fig = ct.create_chart("histogram", df_clean, col=col)
-            #     plt.show()
-            #
-            # # SCATTER
-            # elif ch == "5":
-            #     col_x = input("X column: ")
-            #     col_y = input("Y column: ")
-            #     fig = ct.create_chart("scatter", df_clean, col_1=col_x, col_2=col_y)
-            #     plt.show()
-            #
-            # else:
-            #     print("Invalid chart option.")
-
-        # ------------------------------------------------------------
         # EXIT
-        # ------------------------------------------------------------
+
         elif choice == "0":
             print("Goodbye.")
             break
