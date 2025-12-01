@@ -3,7 +3,7 @@ from tkinter import ttk, filedialog, messagebox
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from app.charting import create_chart
+from app.core.charting import create_chart
 
 
 class ChartViewer(ttk.Frame):

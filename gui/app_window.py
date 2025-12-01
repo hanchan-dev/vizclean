@@ -13,7 +13,7 @@ class AppWindow(tk.Frame):
         self.master = master
 
         master.title("Data Cleaner & Chart Generator")
-        master.geometry("1280x720")
+        master.geometry("720x480")
 
         self.df = None
         self.df_cleaned = None
