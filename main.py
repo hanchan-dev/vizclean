@@ -7,7 +7,7 @@ def menu():
     print("2. Clean dataset (available after load dataset)")
     print("3. Show cleaning log (available after cleaning)")
     print("4. Save cleaned dataset (available after cleaning)")
-    print("5. Generate chart (available after cleaning)")
+    print("5. Generate chart (available for raw or cleaned dataset)")
     print("0. Exit")
     print("======================================")
 
@@ -197,10 +197,6 @@ def main():
         # 5. GENERATE CHART (HANYA SETELAH CLEAN)
 
         elif choice == "5":
-            if df_clean is None:
-                print("Clean the data first, you impatient rascal.")
-                continue
-
             chart_menu()
             ch = input("Chart type: ")
 
@@ -218,11 +214,34 @@ def main():
 
             chart_type = mapping[ch]
 
-            params = ask_chart_params(chart_type, df_clean)
+            if df_clean is None:
+                params = ask_chart_params(chart_type, df_raw)
+                fig = ct.create_chart(chart_type, df_raw, **params)
+
+
+            else:
+                params = ask_chart_params(chart_type, df_clean)
+                fig = ct.create_chart(chart_type, df_clean, **params)
 
             # GENERATE FIGURE
-            fig = ct.create_chart(chart_type, df_clean, **params)
             fig.show()
+
+            save = input("\nSave chart as image? (yes/no): ").strip().lower()
+
+            if save == "yes":
+                filename = input("Enter filename (without extension): ").strip()
+                ext = input("Choose format (png/jpg/svg): ").strip().lower()
+
+                if ext not in {"png", "jpg", "svg"}:
+                    print("Unsupported format. Using PNG instead.")
+                    ext = "png"
+
+                fullpath = f"{filename}.{ext}"
+                try:
+                    fig.savefig(fullpath, dpi=300, bbox_inches="tight")
+                    print(f"Chart saved as: {fullpath}")
+                except Exception as e:
+                    print("Failed to save chart:", e)
 
             input("Press Enter to continue...")
 
