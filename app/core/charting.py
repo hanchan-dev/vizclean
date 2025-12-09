@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas.api.types as ptypes
 from matplotlib.pyplot import legend
 
 
@@ -70,17 +72,29 @@ def pie(ax, df, title, col, limit=None):
 
 
 def histogram(ax, df, title, col, x_label, y_label,
-              bins=10, color1="blue", grid=False, limit=None):
+              color1="blue", grid=False, limit=None):
 
 
-    values = df[col].dropna()
-    values = apply_limit(values, limit)
+    if not ptypes.is_numeric_dtype(df[col]):
+        print(f"Error: The column '{col}' is not numeric, cannot generate histogram.")
+        raise ValueError(f"Invalid data type for column '{col}'. Expected numeric data.")
 
+    # values = df[col].dropna()
+    values = apply_limit(df[col], limit)
+
+    mean = np.mean(values)
+    std = np.std(values)
+
+    hist, bins = np.histogram(values, bins="auto")
     ax.hist(values, bins=bins, color=color1, edgecolor="black")
 
     ax.set_title(title, fontsize=18, fontweight="bold")
     ax.set_xlabel(x_label, fontsize=12)
     ax.set_ylabel(y_label, fontsize=12)
+
+    plt.axvline(mean, linestyle='--', linewidth=2, label=f"Mean = {mean:.2f}")
+    plt.axvline(mean + std, linestyle=':', linewidth=1, label=f"+1 std = {mean + std:.2f}")
+    plt.axvline(mean - std, linestyle=':', linewidth=1, label=f"-1 std = {mean - std:.2f}")
 
     ax.tick_params(axis='x', rotation=30)
 
@@ -156,7 +170,7 @@ def create_chart(chart_type, df, fig=None, *,
                  color1="blue",
                  marker="o", markersize=6,
                  linestyle="solid", linewidth=2,
-                 bins=10, grid=False,
+                 grid=False,
                  color2="red",
                  marker2="o",
                  legend1="",
@@ -189,7 +203,7 @@ def create_chart(chart_type, df, fig=None, *,
     elif chart_type == "histogram":
         histogram(ax, df, title, col,
                   x_label, y_label,
-                  bins=bins, color1=color1, grid=grid, limit=limit)
+                  color1=color1, grid=grid, limit=limit)
 
     elif chart_type == "scatter":
         scatter(

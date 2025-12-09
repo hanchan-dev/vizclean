@@ -16,7 +16,7 @@ def chart_menu():
     print("1. Line")
     print("2. Bar")
     print("3. Pie")
-    print("4. Histogram")
+    print("4. Histogram (Only For Numeric Column)")
     print("5. Scatter (2 columns)")
     print("-------------------")
 
@@ -71,7 +71,6 @@ CHART_FIELDS = {
     "histogram": [
         ("Column", "col"),
         ("Title", "title"),
-        ("Bins", "bins"),
         ("Color", "color1"),
         ("X Label", "x_label"),
         ("Y Label", "y_label"),
@@ -97,9 +96,6 @@ def ask_chart_params(chart_type, df):
         # ==== Convert otomatis ====
         if key == "grid":
             params[key] = (val.lower() == "yes")
-
-        elif key == "bins":
-            params[key] = int(val) if val.isdigit() else 10
 
         elif key == "markersize":
             params[key] = int(val) if val.isdigit() else 6
@@ -197,34 +193,39 @@ def main():
         # 5. GENERATE CHART (HANYA SETELAH CLEAN)
 
         elif choice == "5":
-            chart_menu()
-            ch = input("Chart type: ")
+            try:
+                chart_menu()
+                ch = input("Chart type: ")
 
-            mapping = {
-                "1": "line",
-                "2": "bar",
-                "3": "pie",
-                "4": "histogram",
-                "5": "scatter"
-            }
+                mapping = {
+                    "1": "line",
+                    "2": "bar",
+                    "3": "pie",
+                    "4": "histogram",
+                    "5": "scatter"
+                }
 
-            if ch not in mapping:
-                print("Invalid chart option.")
-                continue
+                if ch not in mapping:
+                    print("Invalid chart option.")
+                    continue
 
-            chart_type = mapping[ch]
+                chart_type = mapping[ch]
 
-            if df_clean is None:
-                params = ask_chart_params(chart_type, df_raw)
-                fig = ct.create_chart(chart_type, df_raw, **params)
+                if df_clean is None:
+                    params = ask_chart_params(chart_type, df_raw)
+                    fig = ct.create_chart(chart_type, df_raw, **params)
 
 
-            else:
-                params = ask_chart_params(chart_type, df_clean)
-                fig = ct.create_chart(chart_type, df_clean, **params)
+                else:
+                    params = ask_chart_params(chart_type, df_clean)
+                    fig = ct.create_chart(chart_type, df_clean, **params)
 
-            # GENERATE FIGURE
-            fig.show()
+                # GENERATE FIGURE
+                fig.show()
+            except Exception as e:
+                print(f"Error: {e}")
+                print("Returning to the menu...")
+                input("Press Enter to continue...")
 
             save = input("\nSave chart as image? (yes/no): ").strip().lower()
 
