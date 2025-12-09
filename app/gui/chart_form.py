@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from gui.chart_viewer import ChartViewer
+from app.gui.chart_viewer import ChartViewer
 
 
 class ChartForm(ttk.Frame):
@@ -107,7 +107,6 @@ class ChartForm(ttk.Frame):
             "histogram": [
                 ("Column", "col", df.columns),
                 ("Title", "title"),
-                ("Bins", "bins"),
                 ("Color", "color1"),
                 ("X Label", "x_label"),
                 ("Y Label", "y_label"),

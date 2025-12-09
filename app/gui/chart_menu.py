@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from gui.chart_form import ChartForm
+from app.gui.chart_form import ChartForm
 
 
 class ChartMenu:

@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import pandas as pd
 
-from gui.cleaner_view import CleanerView
-from gui.chart_menu import ChartMenu
+from app.gui.cleaner_view import CleanerView
+from app.gui.chart_menu import ChartMenu
 
 
 class AppWindow(tk.Frame):
@@ -12,7 +12,7 @@ class AppWindow(tk.Frame):
         super().__init__(master)
         self.master = master
 
-        master.title("Data Cleaner & Chart Generator")
+        master.title("Vizclean: Data Cleaner & Chart Generator")
         master.geometry("720x480")
 
         self.df = None
@@ -35,7 +35,7 @@ class AppWindow(tk.Frame):
 
         ttk.Label(
             frame,
-            text="Data Cleaner & Chart Generator",
+            text="Welcome to VizClean",
             font=("Segoe UI", 22, "bold")
         ).pack(pady=25)
 
@@ -126,11 +126,17 @@ class AppWindow(tk.Frame):
     # =================== CHART MENU ====================
 
     def open_chart_menu(self):
-        if self.df is None:
-            messagebox.showwarning("No Data", "Upload dataset first.")
+
+        try:
+            if self.df is None:
+                messagebox.showwarning("No Data", "Upload dataset first.")
+                return
+
+            df_source = self.df_cleaned if self.df_cleaned is not None else self.df
+
+            self.clear_container()
+            ChartMenu(self, self.container, df_source)
+
+        except Exception as e:
+            messagebox.showwarning("Type Error", f"{e}")
             return
-
-        df_source = self.df_cleaned if self.df_cleaned is not None else self.df
-
-        self.clear_container()
-        ChartMenu(self, self.container, df_source)

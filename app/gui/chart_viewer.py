@@ -3,7 +3,7 @@ from tkinter import ttk, filedialog, messagebox
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-from app.core.charting import create_chart
+from app.core.charting import Chart
 
 
 class ChartViewer(ttk.Frame):
@@ -63,7 +63,7 @@ class ChartViewer(ttk.Frame):
             #
             # Pastikan create_chart menggambar pada self.fig
             #
-            create_chart(
+            Chart.create_chart(
                 df=self.df,
                 chart_type=self.chart_type,
                 fig=self.fig,

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
-from app.core.data_cleaner import clean_data
+from app.core.data_cleaner import DataCleaner
 
 
 class CleanerView:
@@ -17,7 +17,7 @@ class CleanerView:
         ).pack(pady=20)
 
         try:
-            cleaned_df, logs = clean_data(df)
+            cleaned_df, logs = DataCleaner.clean_data(df)
             self.app.df_cleaned = cleaned_df
         except Exception as e:
             messagebox.showerror("Error", str(e))
