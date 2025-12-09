@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import datetime
 import pandas.api.types as ptypes
-from .logger import CleaningLogger
+from .logger import add_log 
 
 
 # Membersihkan data pada kolom
@@ -16,7 +16,7 @@ def clean_column_name(df, log):
         .str.replace(r'[^a-zA-Z0-9_]', '', regex=True)
     )
 
-    log.add("clean_column_name", {
+    add_log(log, "clean_column_name", {
         'before': original_cols,
         'after': df.columns.tolist()
     })
@@ -42,7 +42,7 @@ def trim_text_columns(df, log):
 
         df[col] = trimmed
 
-    log.add("trim_column_values", {"affected_columns": trim_counts})
+    add_log(log, "trim_column_values", {"affected_columns": trim_counts})
     return df
 
 
@@ -82,13 +82,12 @@ def convert_date(df, log):
 
         df[col] = full_parsed
 
-    log.add("convert_date", {"affected_columns": date_counts})
+    add_log(log, "convert_date", {"affected_columns": date_counts})
     return df
 
 
 def is_date_column(series):
     return series.dropna().apply(lambda x: isinstance(x, datetime.date)).all()
-
 
 
 
@@ -127,7 +126,7 @@ def convert_numeric(df, log, digit_treshold=0.5):
         if changed_count > 0:
             numeric_counts[col] = int(changed_count)
 
-    log.add("convert_numeric", {"affected_columns": numeric_counts})
+    add_log(log, "convert_numeric", {"affected_columns": numeric_counts})
     return df
 
 
@@ -160,7 +159,7 @@ def normalize_text(df, log):
 
         df[col] = normalized
 
-    log.add("normalize_text", {"affected_columns": normalize_counts})
+    add_log(log, "normalize_text", {"affected_columns": normalize_counts})
     return df
 
 def fill_missing(df, log):
@@ -189,7 +188,7 @@ def fill_missing(df, log):
             df[col] = df[col].fillna("unknown")
             category_log[col] = missing_before
 
-    log.add("fill_mising_value", {
+    add_log(log, "fill_mising_value", {
         "numeric": numeric_log,
         "categorical": category_log
     })
@@ -207,7 +206,7 @@ def drop_entry_duplicate(df, log):
     df = df.drop_duplicates(keep='first')
     after_dedup = len(df)
 
-    log.add("drop_entry_duplicate", {
+    add_log(log, "drop_entry_duplicate", {
         "dropped_nan": before - after_dropna,
         "dropped_duplicates": after_dropna - after_dedup,
         "total_after_cleaning": after_dedup
@@ -219,17 +218,17 @@ def drop_entry_duplicate(df, log):
 
 
 def clean_data(df):
-    log = CleaningLogger()
+    logs = {}
     df = df.copy()
 
-    df = clean_column_name(df, log)
-    df = trim_text_columns(df, log)
-    df = convert_date(df, log)
-    df = normalize_text(df, log)
-    df = convert_numeric(df, log)
-    df = fill_missing(df, log)
-    df = drop_entry_duplicate(df, log)
+    df = clean_column_name(df, logs)
+    df = trim_text_columns(df, logs)
+    df = convert_date(df, logs)
+    df = normalize_text(df, logs)
+    df = convert_numeric(df, logs)
+    df = fill_missing(df, logs)
+    df = drop_entry_duplicate(df, logs)
 
-    return df, log.get_log()
+    return df, logs
 
 

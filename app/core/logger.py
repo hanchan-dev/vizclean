@@ -1,11 +1,6 @@
-class CleaningLogger:
-    def __init__(self):
-        self.logs = {}
+def add_log(logs, key, value):
+    logs[key] = value
 
-    def add(self, key, value):
-        self.logs[key] = value
 
-    def get_log(self):
-        return self.logs
 
 
