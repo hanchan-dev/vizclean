@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import pandas as pd
 
+from app.gui.ml_menu import MLMenu  # taruh di imports bagian atas AppWindow
 from app.gui.cleaner_view import CleanerView
 from app.gui.chart_menu import ChartMenu
 
@@ -18,11 +19,22 @@ class AppWindow(tk.Frame):
         self.df = None
         self.df_cleaned = None
 
+        self.model_pipeline = None  # menyimpan pipeline model di memori
+        self.model_meta = None
+
         # MAIN CONTAINER
         self.container = tk.Frame(master)
         self.container.pack(fill="both", expand=True)
 
         self.show_home()
+
+    def open_ml_menu(self):
+        if self.df_cleaned is None:
+            messagebox.showwarning("No Data", "Silakan bersihkan data terlebih dahulu.")
+            return
+
+        self.clear_container()
+        MLMenu(self, self.container, self.df_cleaned)
 
     # ================= HOME PAGE =================
 
@@ -62,11 +74,17 @@ class AppWindow(tk.Frame):
 
         ttk.Button(
             frame,
+            text="Machine Learning Classifier",
+            command=self.open_ml_menu,
+            width=40
+        ).pack(pady=10)
+
+        ttk.Button(
+            frame,
             text="Exit",
             command=self.master.quit,
             width=20
         ).pack(pady=20)
-
 
 
     def switch_page(self, page_name):
@@ -79,6 +97,10 @@ class AppWindow(tk.Frame):
         elif page_name == "chart_menu":
             df_source = self.df_cleaned if self.df_cleaned is not None else self.df
             ChartMenu(self, self.container, df_source)
+
+        elif page_name == "ml_menu":
+            df_source = self.df_cleaned if self.df_cleaned is not None else self.df
+            MLMenu(self, self.container, df_source)
 
         else:
             raise ValueError(f"Unknown page: {page_name}")

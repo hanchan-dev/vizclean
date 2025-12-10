@@ -226,7 +226,7 @@ class DataCleaner:
 
         cleaned_df = DataCleaner.clean_column_name(raw_df, log)
         cleaned_df = DataCleaner.trim_text_columns(cleaned_df, log)
-        cleaned_df = DataCleaner.convert_date(cleaned_df, log)
+        # cleaned_df = DataCleaner.convert_date(cleaned_df, log)
         cleaned_df = DataCleaner.normalize_text(cleaned_df, log)
         cleaned_df = DataCleaner.convert_numeric(cleaned_df, log)
         cleaned_df = DataCleaner.fill_missing(cleaned_df, log)
