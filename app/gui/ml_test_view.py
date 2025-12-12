@@ -1,18 +1,19 @@
-# app/gui/ml_test_view.py
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog, scrolledtext
 
+from app.gui.ml_test_plot_view import MLTestPlotView
 from app.ml.model_saver import ModelSaver
 from app.ml.model_tester import ModelTester
 
 class MLTestView(ttk.Frame):
+
     """
     GUI untuk testing model.
     Bisa memakai model yang tersimpan di app.model_pipeline atau load dari file .pkl
     """
-
     def __init__(self, app, container, df):
         super().__init__(container)
+        self.latest_report_cm = None
         self.app = app
         self.df = df
         self.pack(fill="both", expand=True)
@@ -36,6 +37,13 @@ class MLTestView(ttk.Frame):
 
         # Save predictions
         ttk.Button(self, text="Save Predictions (CSV)", command=self.save_predictions).pack(pady=6)
+
+        # button plot
+        ttk.Button(
+            self,
+            text="Plot Test Result",
+            command=self.open_plot_page
+        ).pack(pady=6)
 
         ttk.Button(self, text="Back to ML Menu", command=lambda: app.switch_page("ml_menu")).pack(pady=8)
 
@@ -93,6 +101,7 @@ class MLTestView(ttk.Frame):
             self.report_box.insert(tk.END, f"{cm}\n\n")
             self.report_box.insert(tk.END, "Classification Report:\n")
             self.report_box.insert(tk.END, f"{report}\n")
+            self.latest_report_cm = cm
 
             messagebox.showinfo("Test Completed", f"Testing selesai. Accuracy: {acc:.4f}")
 
@@ -116,3 +125,24 @@ class MLTestView(ttk.Frame):
             messagebox.showinfo("Saved", f"Predictions saved to {path}")
         except Exception as e:
             messagebox.showerror("Save Error", str(e))
+
+    def open_plot_page(self):
+        if not hasattr(self, "latest_predictions") or self.latest_predictions is None:
+            messagebox.showwarning("No Data", "Jalankan testing dulu.")
+            return
+
+        result = {
+            "predictions": self.latest_predictions,
+            "confusion_matrix": self.latest_report_cm,
+            "y_test": self.df[self.target_box.get()].values
+        }
+
+        for w in self.master.winfo_children():
+            w.destroy()
+
+        MLTestPlotView(
+            app=self.app,
+            container=self.master,
+            test_result=result,
+            switch_back=lambda: self.app.switch_page("ml_test")
+        )

@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 from app.core.data_cleaner import DataCleaner
 
-
 class CleanerView:
 
     def __init__(self, app, container, df):

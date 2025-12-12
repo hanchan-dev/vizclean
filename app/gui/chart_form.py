@@ -17,9 +17,7 @@ class ChartForm(ttk.Frame):
 
         self.inputs = {}
 
-        # ============================================================
-        # >>> PATCH 1: FULL WINDOW SCROLL AREA
-        # ============================================================
+
         canvas = tk.Canvas(self, highlightthickness=0)
         scroll_y = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
 
@@ -41,17 +39,14 @@ class ChartForm(ttk.Frame):
             "<Configure>",
             lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
         )
-        # ============================================================
 
-        # ============================================================
-        # >>> PATCH 2: FORM DI TENGAH (CENTER FIX)
-        # ============================================================
+
         center_holder = ttk.Frame(scroll_frame)
         center_holder.pack(fill="both", expand=True)
 
         inner_wrapper = ttk.Frame(center_holder)
         inner_wrapper.pack(anchor="center", pady=20)
-        # ============================================================
+
 
         ttk.Label(inner_wrapper, text=f"{chart_type.upper()} SETTINGS",
                   font=("Segoe UI", 16, "bold")).pack(pady=10)
@@ -115,7 +110,6 @@ class ChartForm(ttk.Frame):
             ]
         }
 
-        # --- render input field otomatis -----------------------------
 
         for field in self.chart_fields[self.chart_type]:
             label, key = field[0], field[1]

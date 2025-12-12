@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import pandas as pd
 
-from app.gui.ml_menu import MLMenu  # taruh di imports bagian atas AppWindow
 from app.gui.cleaner_view import CleanerView
 from app.gui.chart_menu import ChartMenu
+from app.gui.ml_menu import MLMenu
+from app.gui.ml_train_view import MLTrainView
+from app.gui.ml_test_view import MLTestView
 
 
 class AppWindow(tk.Frame):
@@ -13,7 +15,7 @@ class AppWindow(tk.Frame):
         super().__init__(master)
         self.master = master
 
-        master.title("Vizclean: Data Cleaner & Chart Generator")
+        master.title("Vizclean: Data Cleaner, Chart Generator & ML Classifier in one app")
         master.geometry("720x480")
 
         self.df = None
@@ -101,6 +103,16 @@ class AppWindow(tk.Frame):
         elif page_name == "ml_menu":
             df_source = self.df_cleaned if self.df_cleaned is not None else self.df
             MLMenu(self, self.container, df_source)
+
+        elif page_name == "ml_menu":
+            MLMenu(self, self.container, self.df_cleaned if self.df_cleaned is not None else self.df)
+
+        elif page_name == "ml_train":
+            MLTrainView(self, self.container, self.df_cleaned if self.df_cleaned is not None else self.df)
+
+        elif page_name == "ml_test":
+            MLTestView(self, self.container, self.df_cleaned if self.df_cleaned is not None else self.df)
+
 
         else:
             raise ValueError(f"Unknown page: {page_name}")

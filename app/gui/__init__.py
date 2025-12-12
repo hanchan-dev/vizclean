@@ -6,3 +6,5 @@ from .chart_viewer import ChartViewer
 from .ml_menu import MLMenu
 from .ml_train_view import MLTrainView
 from .ml_test_view import MLTestView
+from .ml_train_plot_view import MLTrainPlotView
+from .ml_test_plot_view import MLTestPlotView

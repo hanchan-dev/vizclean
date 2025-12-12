@@ -1,4 +1,3 @@
-# app/ml/model_preprocessor.py
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer

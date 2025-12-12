@@ -12,6 +12,8 @@ from app.gui.cleaner_view import CleanerView
 from app.gui.ml_train_view import MLTrainView
 from app.gui.ml_menu import MLMenu
 from app.gui.ml_test_view import MLTestView
+from app.gui.ml_train_plot_view import MLTrainPlotView
+from app.gui.ml_test_plot_view import MLTestPlotView
 
 from app.ml.metrics import Metrics
 from app.ml.model_prepocessor import ModelPreprocessor

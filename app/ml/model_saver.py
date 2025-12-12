@@ -1,4 +1,3 @@
-# app/ml/model_saver.py
 import pickle
 
 

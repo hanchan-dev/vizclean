@@ -1,6 +1,4 @@
-# app/ml/metrics.py
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-
 
 class Metrics:
 

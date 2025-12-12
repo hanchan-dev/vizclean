@@ -8,4 +8,3 @@ class CleaningLogger:
     def get_log(self):
         return self.logs
 
-

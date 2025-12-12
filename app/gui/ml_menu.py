@@ -1,4 +1,3 @@
-# app/gui/ml_menu.py
 import tkinter as tk
 from tkinter import ttk
 from app.gui.ml_train_view import MLTrainView
@@ -40,7 +39,6 @@ class MLMenu:
         ).pack(pady=20)
 
     def open_train(self):
-        # destroy current frame then open train view
         self.frame.destroy()
         MLTrainView(self.app, self.app.container, self.df)
 

@@ -49,7 +49,6 @@ class ChartViewer(ttk.Frame):
         self.chart_frame.pack(fill="both", expand=True)
 
 
-    # ======================================================
 
     def show_chart(self):
         try:

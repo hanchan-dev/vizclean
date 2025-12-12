@@ -1,11 +1,9 @@
-# app/gui/ml_train_view.py
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog, scrolledtext
-
-import pandas as pd
-
 from app.ml.model_trainer import ModelTrainer
 from app.ml.model_saver import ModelSaver
+from app.gui.ml_train_plot_view import MLTrainPlotView
+
 
 class MLTrainView(ttk.Frame):
     """
@@ -47,6 +45,13 @@ class MLTrainView(ttk.Frame):
 
         # Save model button
         ttk.Button(self, text="Save Model to File", command=self.save_model_dialog).pack(pady=6)
+
+        # button plot
+        ttk.Button(
+            self,
+            text="Plot Training Result",
+            command=self.open_plot_page
+        ).pack(pady=6)
 
         # Back
         ttk.Button(self, text="Back to ML Menu", command=lambda: app.switch_page("ml_menu")).pack(pady=8)
@@ -94,6 +99,7 @@ class MLTrainView(ttk.Frame):
             self.log_box.insert(tk.END, f"Training selesai.\nAccuracy (on test split): {accuracy:.4f}\n")
             self.log_box.insert(tk.END, "Model pipeline tersimpan di memori aplikasi.\n")
             messagebox.showinfo("Training Completed", f"Training selesai. Accuracy: {accuracy:.4f}")
+            self.app.last_train_result = result
 
         except Exception as e:
             messagebox.showerror("Training Error", str(e))
@@ -117,3 +123,27 @@ class MLTrainView(ttk.Frame):
             messagebox.showinfo("Saved", f"Model disimpan di: {path}")
         except Exception as e:
             messagebox.showerror("Save Error", str(e))
+
+    def open_plot_page(self):
+        # Pastikan training sudah dilakukan
+        if not hasattr(self.app, "model_pipeline") or self.app.model_pipeline is None:
+            messagebox.showwarning("No Model", "Latih model terlebih dahulu sebelum menampilkan plot.")
+            return
+
+        # Pastikan result dari train ada
+        try:
+            result = self.app.last_train_result
+        except:
+            messagebox.showwarning("No Result", "Belum ada hasil training tersedia.")
+            return
+
+        # switch page
+        for w in self.master.winfo_children():
+            w.destroy()
+
+        MLTrainPlotView(
+            app=self.app,
+            container=self.master,
+            train_result=result,
+            switch_back=lambda: self.app.switch_page("ml_train")
+        )
