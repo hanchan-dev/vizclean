@@ -59,6 +59,10 @@ vizclean/
 │ │ ├── charting.py
 │ │ └── logger.py
 │ │
+│ ├── dataset/
+│ │ ├── netflix_titles.csv
+│ │ ├── vgsales.csv
+│ │
 │ ├── ml/
 │ │ ├── model_preprocessor.py
 │ │ ├── model_trainer.py
@@ -67,17 +71,17 @@ vizclean/
 │ │ └── metrics.py
 │ │
 │ └── gui/
-│ ├── app_window.py
-│ ├── cleaner_view.py
-│ ├── chart_menu.py
-│ ├── chart_form.py
-│ ├── chart_viewer.py
-│ ├── ml_menu.py
-│ ├── ml_train_view.py
-│ ├── ml_test_view.py
-│ ├── ml_train_plot_view.py
-│ └── ml_test_plot_view.py
-│
+│ │ ├── app_window.py
+│ │ ├── cleaner_view.py
+│ │ ├── chart_menu.py
+│ │ ├── chart_form.py
+│ │ ├── chart_viewer.py
+│ │ ├── ml_menu.py
+│ │ ├── ml_train_view.py
+│ │ ├── ml_test_view.py
+│ │ ├── ml_train_plot_view.py
+│ │ ├── ml_test_plot_view.py
+├────
 ├── main.py
 ├── requirements.txt
 └── README.md
@@ -183,8 +187,8 @@ Proyek ini menekankan pada kejelasan alur, transparansi proses, dan kemudahan pe
 
 Developed by: 
 
-Handika Chandra Pratama - **(230511049)**
+Handika Chandra Pratama - **(230611049)**
 
-Riswanto Rumasukun - **(230511086)**
+Riswanto Rumasukun - **(230611086)**
 
-M Naufal Aulia - **(230511042)**
+M Naufal Aulia - **(230611042)**
